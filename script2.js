@@ -73,33 +73,7 @@ function userCreate() {
 
 // UPDATE
 
-function showUserEditBox(id) {
-    console.log(id)
-    const xhttp = new XMLHttpRequest()
-    xhttp.open("GET", "https://gorest.co.in/public/v2/users/" + id)
-    xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8",)
-    xhttp.setRequestHeader("Authorization", "Bearer 97b67a5aa40a3d8a6709e11f8d3986d61d4919be20cf66f961a577d4e3e1b73e")
-    xhttp.send()
-    xhttp.onreadystatechange = function (ee) {
-        console.log(ee)
-        const objects = JSON.parse(this.responseText)
-        const user = objects['user']
-        console.log(user, "lelelele")
-        Swal.fire({
-            title: 'Edit User',
-            html:
-                '<input id="id" type="hidden">' +
-                '<input id="name" class="swal2-input" placeholder="name">' +
-                '<input id="email" class="swal2-input" placeholder="email">' +
-                '<input id="gender" class="swal2-input" placeholder="gender">' +
-                '<input id="status" class="swal2-input" placeholder="status">',
-            focusConfirm: false,
-            preConfirm: () => {
-                userEdit()
-            }
-        })
-    }
-}
+
 
 function userEdit(eee) {
     console.log(eee)
@@ -110,7 +84,7 @@ function userEdit(eee) {
     const status = document.getElementById("status").value
 
     const xhttp = new XMLHttpRequest()
-    xhttp.open("PUT", "https://gorest.co.in/public/v2/comments" + id)
+    xhttp.open("PUT", "https://gorest.co.in/public/v2/comments")
     xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8")
     xhttp.setRequestHeader("Authorization", "Bearer 97b67a5aa40a3d8a6709e11f8d3986d61d4919be20cf66f961a577d4e3e1b73e")
 
@@ -126,6 +100,39 @@ function userEdit(eee) {
     }
 }
 
+function showUserEditBox(id) {
+    console.log(id)
+    const xhttp = new XMLHttpRequest()
+    xhttp.open("GET", "https://gorest.co.in/public/v2/users/" + id)
+    xhttp.setRequestHeader('Accept', 'application/json')
+    xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8",)
+    xhttp.setRequestHeader("Authorization", "Bearer 97b67a5aa40a3d8a6709e11f8d3986d61d4919be20cf66f961a577d4e3e1b73e")
+    xhttp.send()
+    xhttp.onreadystatechange = function (ee) {
+        console.log(ee)
+        const objects = JSON.parse(this.responseText)
+        const dataUser = objects['dataUser']
+        console.log(dataUser, "lelelele")
+        Swal.fire({
+            title: 'Edit User',
+            html:
+                '<input id="id" type="hidden" >' +
+                '<input id="name" class="swal2-input" placeholder="name" + dataUser.name + >' +
+                '<input id="email" class="swal2-input" placeholder="email"></br></br>' +
+                '<input type="radio" name="gender" value="male"> Male &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
+                '<input type="radio" name="gender" value="female"> Female </br></br>' +
+                '<select name="status" id="status">' +
+                '<option value="active">active</option>' +
+                '<option value="inactive">inactive</option>' +
+                '</select>',
+            // '<input id="status" class="swal2-input" placeholder="status">',
+            focusConfirm: false,
+            preConfirm: () => {
+                userEdit()
+            }
+        })
+    }
+}
 
 // DELETE
 

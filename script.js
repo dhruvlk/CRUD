@@ -20,7 +20,7 @@ fetch('https://gorest.co.in/public/v2/users').then((data) => {
     // console.log(data)
     return data.json()
 }).then((completedata) => {
-    console.log(completedata)
+    // console.log(completedata)
     // document.getElementById('root').innerHTML = completedata[2].name
     let data1 = " "
     completedata.map((values) => {
