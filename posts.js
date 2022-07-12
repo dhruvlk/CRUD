@@ -2,7 +2,7 @@
 function loadTable() {
     // function trclick() { console.log('tr clicked') };
     const xhttp = new XMLHttpRequest()
-    xhttp.open("GET", "https://gorest.co.in/public/v2/users")
+    xhttp.open("GET", "https://gorest.co.in/public/v2/posts")
     xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8"),
         xhttp.setRequestHeader(
             "Authorization",
@@ -17,11 +17,12 @@ function loadTable() {
             objects.map((object) => {
                 trHTML += "<tr>"
                 trHTML += "<td>" + object["id"] + "</td>"
+                trHTML += "<td>" + object["user_id"] + "</td>"
                 // trHTML += '<td><img width="50px" src="' + object['name'] + '" class="name"></td>'
-                trHTML += "<td onclick='trclick();'>" + object["name"] + "</td>"
-                trHTML += "<td>" + object["email"] + "</td>"
-                trHTML += "<td>" + object["gender"] + "</td>"
-                trHTML += "<td>" + object["status"] + "</td>"
+                trHTML += "<td>" + object["title"] + "</td>"
+                trHTML += "<td>" + object["body"] + "</td>"
+                // trHTML += "<td>" + object["gender"] + "</td>"
+                // trHTML += "<td>" + object["status"] + "</td>"
                 trHTML +=
                     '<td><button type="button" class="btn btn-outline-secondary" onclick="showUserEditBox(' +
                     object["id"] +
@@ -45,20 +46,22 @@ loadTable()
 // POST
 
 function showUserCreateBox() {
+    console.log("user-------------------->")
     Swal.fire({
         title: "Create user",
         html:
-            '<input id="id" type="hidden">' +
-            '<input id="name" class="swal2-input" placeholder="Name">' +
-            '<input id="email" class="swal2-input" pattern="[^ @]*@[^ @]*" placeholder="Email"></br></br>' +
-            //   '<input id="gender" class="swal2-input" placeholder="Gender">' +
-            //   '<input id="status" class="swal2-input" placeholder="Status">',
-            '<input id="gender" type="radio" name="gender" value="male"> Male &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
-            '<input id="gender" type="radio" name="gender" value="female" > Female </br></br>' +
-            '<select name="status" id="status" >' +
-            '<option value="active">active</option>' +
-            '<option value="inactive">inactive</option>' +
-            "</select>",
+            // '<input id="id" type="hidden">' +
+            '<input id="user_id" class="swal2-input" placeholder="User Id">' +
+            '<input id="title" class="swal2-input" placeholder="Title">' +
+            '<input id="body" class="swal2-input"  placeholder="body"></br></br>',
+        //   '<input id="gender" class="swal2-input" placeholder="Gender">' +
+        //   '<input id="status" class="swal2-input" placeholder="Status">',
+        // '<input id="gender" type="radio" name="gender" value="male"> Male &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
+        // '<input id="gender" type="radio" name="gender" value="female" > Female </br></br>' +
+        // '<select name="status" id="status" >' +
+        // '<option value="active">active</option>' +
+        // '<option value="inactive">inactive</option>' +
+        // "</select>",
         focusConfirm: false,
         preConfirm: () => {
             userCreate()
@@ -68,13 +71,14 @@ function showUserCreateBox() {
 loadTable()
 
 function userCreate() {
-    const name = document.getElementById("name").value
-    const email = document.getElementById("email").value
-    const gender = document.getElementById("gender").value
-    const status = document.getElementById("status").value
+    console.log("1--------------------->")
+    const title = document.getElementById("title").value
+    const body = document.getElementById("body").value
+    // const gender = document.getElementById("gender").value
+    // const status = document.getElementById("status").value
 
     const xhttp = new XMLHttpRequest()
-    xhttp.open("POST", "https://gorest.co.in/public/v2/users")
+    xhttp.open("POST", "https://gorest.co.in/public/v2/posts")
     xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8")
     xhttp.setRequestHeader(
         "Authorization",
@@ -83,10 +87,10 @@ function userCreate() {
 
     xhttp.send(
         JSON.stringify({
-            name: name,
-            email: email,
-            gender: gender,
-            status: status,
+            title: title,
+            body: body,
+            // gender: gender,
+            // status: status,
         })
     )
     xhttp.onreadystatechange = function () {
@@ -101,14 +105,14 @@ function userCreate() {
 // UPDATE
 
 function userEdit() {
-    const id = document.getElementById("id").value
-    const name = document.getElementById("name").value
-    const email = document.getElementById("email").value
-    const gender = document.getElementById("gender").value
-    const status = document.getElementById("status").value
-    "id -> ", id
+    // const id = document.getElementById("id").value
+    const title = document.getElementById("title").value
+    const body = document.getElementById("body").value
+    // const gender = document.getElementById("gender").value
+    // const status = document.getElementById("status").value
+    // "id -> ", id
     const xhttp = new XMLHttpRequest()
-    xhttp.open("PUT", `https://gorest.co.in/public/v2/users/${id}`)
+    xhttp.open("PATCH", `https://gorest.co.in/public/v2/posts/`)
     xhttp.setRequestHeader("Content-Type", "application/json")
     xhttp.setRequestHeader(
         "Authorization",
@@ -117,11 +121,11 @@ function userEdit() {
 
     xhttp.send(
         JSON.stringify({
-            id: id,
-            name: name,
-            email: email,
-            gender: gender,
-            status: status,
+            // id: id,
+            title: title,
+            body: body,
+            // gender: gender,
+            // status: status,
         })
     )
     xhttp.onreadystatechange = function () {
@@ -136,18 +140,10 @@ function userEdit() {
     }
 }
 
-function getGender(gender, ourValue) {
-    if (gender === ourValue) return "checked"
-    else return ""
-}
-
-function getStatus(status) {
-    if (status === "inactive") return "selected"
-}
 
 function showUserEditBox(id) {
     const xhttp = new XMLHttpRequest()
-    xhttp.open("GET", "https://gorest.co.in/public/v2/users/" + id)
+    xhttp.open("GET", "https://gorest.co.in/public/v2/posts/" + id)
     xhttp.setRequestHeader("Accept", "application/json")
     xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8")
     xhttp.setRequestHeader(
@@ -162,33 +158,33 @@ function showUserEditBox(id) {
         Swal.fire({
             title: "Edit User",
             html:
-                '<input id="id" type="hidden" value=' +
-                objects["id"] +
-                ">" +
-                '<input id="name" class="swal2-input" placeholder="First" value="' +
-                objects["name"] +
+                // '<input id="id" type="hidden" value=' +
+                // objects["id"] +
+                // ">" +
+                '<input id="title" class="swal2-input" placeholder="First" value="' +
+                objects["title"] +
                 '">' +
-                '<input id="email" class="swal2-input" pattern="[^ @]*@[^ @]*" placeholder="email"  value="' +
-                objects["email"] +
-                '"></br></br>' +
-                // '<input id="gender" class="swal2-input" placeholder="gender"  value="' + objects['gender'] + '"></br></br>' +
-                // '<input id="status" class="swal2-input" placeholder="status"  value="' + objects['status'] + '"></br></br>'
-                `<input id="gender" type="radio" name="gender" value="male" ${getGender(
-                    objects["gender"],
-                    "male"
-                )} > Male &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;` +
-                `<input id="gender" type="radio" name="gender" value="female" ${getGender(
-                    objects["gender"],
-                    "female"
-                )} > Female </br></br>` +
-                '<select name="status" id="status" >' +
-                `<option id="status" value="active" name="status" ${getStatus(
-                    objects["status"]
-                )} >active</option>` +
-                `<option id="status" value="inactive" name="status" ${getStatus(
-                    objects["status"]
-                )} >inactive</option>` +
-                "</select>",
+                '<input id="body" class="swal2-input"  placeholder="body"  value="' +
+                objects["body"] +
+                '"></br></br>',
+            // '<input id="gender" class="swal2-input" placeholder="gender"  value="' + objects['gender'] + '"></br></br>' +
+            // '<input id="status" class="swal2-input" placeholder="status"  value="' + objects['status'] + '"></br></br>'
+            // `<input id="gender" type="radio" name="gender" value="male" ${getGender(
+            //     objects["gender"],
+            //     "male"
+            // )} > Male &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;` +
+            // `<input id="gender" type="radio" name="gender" value="female" ${getGender(
+            //     objects["gender"],
+            //     "female"
+            // )} > Female </br></br>` +
+            // '<select name="status" id="status" >' +
+            // `<option id="status" value="active" name="status" ${getStatus(
+            //     objects["status"]
+            // )} >active</option>` +
+            // `<option id="status" value="inactive" name="status" ${getStatus(
+            //     objects["status"]
+            // )} >inactive</option>` +
+            // "</select>",
             // '<input id="status" class="swal2-input" placeholder="status">',
             focusConfirm: false,
             preConfirm: () => {
@@ -222,8 +218,9 @@ function showUserEditBox(id) {
 // }
 
 function userDelete(id) {
+    console.log(id, "deeeeeeeeeeeeeeeel")
     const xhttp = new XMLHttpRequest()
-    xhttp.open("DELETE", "https://gorest.co.in/public/v2/users/" + id)
+    xhttp.open("DELETE", `https://gorest.co.in/public/v2/users/${id}`)
     xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8")
     xhttp.setRequestHeader(
         "Authorization",
