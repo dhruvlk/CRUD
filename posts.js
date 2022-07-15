@@ -1,8 +1,10 @@
 // GET
-function loadTable() {
+function loadTable(url) {
     // function trclick() { console.log('tr clicked') };
     const xhttp = new XMLHttpRequest()
-    xhttp.open("GET", "https://gorest.co.in/public/v2/posts")
+
+    xhttp.open("GET", url)
+
     xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8"),
         xhttp.setRequestHeader(
             "Authorization",
@@ -14,6 +16,7 @@ function loadTable() {
         if (this.readyState == 4 && this.status == 200) {
             var trHTML = ""
             const objects = JSON.parse(this.responseText)
+
             objects.map((object) => {
                 trHTML += "<tr>"
                 trHTML += "<td>" + object["id"] + "</td>"
@@ -38,7 +41,7 @@ function loadTable() {
     }
 }
 
-loadTable()
+// loadTable()
 
 // function trclick() { console.log('tr clicked') };
 
@@ -68,7 +71,7 @@ function showUserCreateBox() {
         },
     })
 }
-loadTable()
+// loadTable()
 
 function userCreate() {
     console.log("1--------------------->")
@@ -196,6 +199,21 @@ function showUserEditBox(id) {
         //   document.getElementById("name").value = object.name.innerHTML;
         // }
     }
+}
+
+window.onload = function () {
+    let params = Object.fromEntries(new URLSearchParams(window.location.search).entries())
+    let user_id = params.id
+    let url = "https://gorest.co.in/public/v2/posts/"
+
+    if (user_id) {
+        let new_url = url + user_id
+        console.log(new_url)
+        loadTable(new_url)
+    } else {
+        loadTable(url)
+    }
+
 }
 
 // DELETE

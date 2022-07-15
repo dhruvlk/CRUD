@@ -18,7 +18,7 @@ function loadTable() {
                 trHTML += "<tr>"
                 trHTML += "<td>" + object["id"] + "</td>"
                 // trHTML += '<td><img width="50px" src="' + object['name'] + '" class="name"></td>'
-                trHTML += "<td onclick='trclick();'>" + object["name"] + "</td>"
+                trHTML += "<td id='" + object['id'] + "'onclick='trclick(event.target)'>" + object["name"] + "</td>"
                 trHTML += "<td>" + object["email"] + "</td>"
                 trHTML += "<td>" + object["gender"] + "</td>"
                 trHTML += "<td>" + object["status"] + "</td>"
@@ -39,7 +39,7 @@ function loadTable() {
 
 loadTable()
 
-// function trclick() { console.log('tr clicked') };
+function trclick(el) { console.log(el.id); window.location.href = "/posts.html?id=" + el.id };
 
 
 // POST
